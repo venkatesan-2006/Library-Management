@@ -4,139 +4,109 @@
 <meta charset="UTF-8">
 <title>Library Management System</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
-:root {
-  --bg:#f4f6f8; --card:#fff; --text:#111827; --nav:#1e293b; --btn:#2563eb;
+:root{
+  --bg:#eef2ff; --card:#ffffff; --text:#111827; --nav:#1e293b; --btn:#4f46e5; --success:#16a34a; --danger:#dc2626; --warning:#f59e0b;
 }
-.dark {
+.dark{
   --bg:#0f172a; --card:#020617; --text:#e5e7eb; --nav:#020617; --btn:#38bdf8;
 }
-* { box-sizing:border-box; font-family:Arial,sans-serif; }
-body {
-  margin:0; min-height:100vh;
-  background:linear-gradient(135deg,#667eea,#764ba2);
+*{box-sizing:border-box;font-family:Arial,sans-serif;margin:0;padding:0;}
+body{
+  min-height:100vh; background:linear-gradient(135deg,#c7d2fe,#fbcfe8); color:var(--text); scroll-behavior:smooth;
 }
+.dark body{background:linear-gradient(135deg,#020617,#0f172a);}
 
 /* AUTH */
-.auth-container {
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-.auth-card {
-  background:white;
-  width:360px;
-  padding:30px;
-  border-radius:12px;
-  box-shadow:0 15px 30px rgba(0,0,0,.3);
-}
-.auth-card input,.auth-card button {
-  width:100%;
-  padding:10px;
-  margin-top:10px;
-}
-.auth-card button {
-  background:#667eea;
-  color:white;
-  border:none;
-  cursor:pointer;
-}
-.switch {
-  margin-top:10px;
-  font-size:14px;
-  cursor:pointer;
-}
+.auth-container{min-height:100vh; display:flex; justify-content:center; align-items:center;}
+.auth-card{background:white; width:360px; padding:30px; border-radius:12px; box-shadow:0 15px 30px rgba(0,0,0,.3);}
+.auth-card h2{text-align:center; margin-bottom:15px;}
+.auth-card input, .auth-card button{width:100%; padding:10px; margin-top:10px; border-radius:5px; border:1px solid #ccc;}
+.auth-card button{background:var(--btn); color:white; border:none; cursor:pointer;}
+.switch{margin-top:10px; font-size:14px; cursor:pointer;}
+.show-pass{display:flex; align-items:center; gap:6px; margin-top:8px; font-size:14px;}
+.show-pass input{margin:0; width:16px; height:16px; cursor:pointer;}
 
-/* SHOW PASSWORD ALIGN */
-.show-pass {
-  display:flex;
-  align-items:center;
-  gap:6px;
-  margin-top:8px;
-  font-size:14px;
+/* NAVBAR */
+nav{
+  display:none; background:var(--nav); padding:12px; display:flex; gap:10px; flex-wrap:wrap; position:sticky; top:0; z-index:10;
 }
-
-/* NAV */
-nav {
-  display:none;
-  background:var(--nav);
-  padding:12px;
-  gap:10px;
-  flex-wrap:wrap;
-}
-nav button {
-  background:var(--btn);
-  border:none;
-  padding:8px 12px;
-  border-radius:5px;
-  cursor:pointer;
-  color:white;
-}
+nav button{background:var(--btn); border:none; padding:8px 12px; border-radius:5px; cursor:pointer; color:white;}
+nav button:hover{opacity:0.85;}
+.logout{background:var(--danger);}
+.toggle{background:var(--warning);}
 
 /* SECTIONS */
-section { display:none; padding:30px; }
-section.active { display:block; }
-.container {
-  max-width:900px;
-  margin:auto;
-  background:var(--card);
-  color:var(--text);
-  padding:25px;
-  border-radius:10px;
-}
+section{display:none; padding:25px;}
+section.active{display:block;}
+.container{max-width:1000px; margin:auto; background:var(--card); color:var(--text); padding:25px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.1);}
+
+/* STATS */
+.stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:15px; margin-bottom:20px;}
+.stat{padding:15px; border-radius:10px; background:linear-gradient(135deg,#2563eb,#4f46e5); color:white; text-align:center; transition:transform 0.3s;}
+.stat:hover{transform:scale(1.05);}
+.stat h3{margin:0; font-size:24px;}
+
+/* PROGRESS BARS */
+.progress-container{margin:10px 0; background:#e5e7eb; border-radius:10px; overflow:hidden;}
+.progress-bar{height:20px; background:var(--btn); width:0%; color:white; text-align:center; font-size:12px; line-height:20px; transition:width 0.5s;}
+
+/* CHARTS */
+.chart-container{display:flex; flex-wrap:wrap; gap:20px; margin-bottom:20px;}
+.chart{flex:1; min-width:150px;}
+.bar{background:var(--btn); height:20px; margin:4px 0; text-align:right; color:white; padding-right:5px; border-radius:5px; transition:width 0.5s;}
+
+/* CONTROLS */
+.controls{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:15px;}
+.controls input, .controls select{padding:8px; flex:1; border-radius:5px; border:1px solid #ccc;}
+.clear-btn{background:#e5e7eb; border:none; padding:8px; cursor:pointer; border-radius:5px;}
+.clear-btn:hover{opacity:0.8;}
+
+/* ADD FORM */
+.add-form{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-bottom:15px;}
+.add-form button{background:var(--btn); color:white; border:none; padding:8px; cursor:pointer;}
+.add-form button:hover{opacity:0.85;}
 
 /* TABLE */
-table {
-  width:100%;
-  border-collapse:collapse;
-  margin-top:20px;
-}
-th,td {
-  border:1px solid #ccc;
-  padding:8px;
-  text-align:center;
-}
-th { background:#e5e7eb; }
+table{width:100%; border-collapse:collapse; margin-top:15px;}
+th,td{border:1px solid #ccc; padding:8px; text-align:center;}
+th{background:#e5e7eb; cursor:pointer;}
+th:hover{opacity:0.8;}
+tr:hover{background:#f1f5f9;}
+.overdue{background:#fde2e2;}
+.action-btn{background:var(--success); color:white; border:none; padding:6px; cursor:pointer;}
+.delete-btn{background:var(--danger); color:white; border:none; padding:6px; cursor:pointer;}
+.badge{background:var(--danger); color:white; padding:2px 6px; border-radius:6px; font-size:12px;}
 
-/* BUTTONS */
-.add-btn{background:#2563eb;color:white;border:none;padding:8px;}
-.action-btn{background:#16a34a;color:white;border:none;padding:6px;}
-.delete-btn{background:#dc2626;color:white;border:none;padding:6px;}
-.toggle{background:#f59e0b;}
-.logout{background:#dc2626;}
+/* MOBILE */
+@media(max-width:600px){
+table{font-size:12px;}
+.stats{grid-template-columns:repeat(auto-fit,minmax(120px,1fr));}
+.chart-container{flex-direction:column;}
+}
 </style>
 </head>
-
 <body>
 
 <!-- AUTH -->
 <div class="auth-container" id="auth">
   <div class="auth-card">
     <h2 id="authTitle">Login</h2>
-
     <input id="authUser" placeholder="Username">
     <input id="authPass" type="password" placeholder="Password">
-
-    <div class="show-pass">
-      <input type="checkbox" onclick="togglePassword()">
-      <span>Show Password</span>
-    </div>
-
+    <label class="show-pass"><input type="checkbox" onclick="togglePassword()"> Show Password</label>
     <button onclick="authAction()">Login</button>
     <div class="switch" onclick="toggleAuth()">Don't have an account? Signup</div>
   </div>
 </div>
 
-<!-- NAVBAR -->
+<!-- NAV -->
 <nav id="navbar">
   <button onclick="showPage('home')">Home</button>
   <button onclick="showPage('engineering')">Engineering</button>
-  <button onclick="showPage('arts')">Arts & Science</button>
-  <button onclick="showPage('competitive')">Competitive Exams</button>
+  <button onclick="showPage('arts')">Arts</button>
+  <button onclick="showPage('competitive')">Competitive</button>
   <button onclick="showPage('productivity')">Productivity</button>
-  <button onclick="showPage('contact')">Contact</button>
   <button class="toggle" onclick="toggleTheme()">🌗</button>
   <button class="logout" onclick="logout()">Logout</button>
 </nav>
@@ -146,28 +116,63 @@ th { background:#e5e7eb; }
   <div class="container">
     <h2>Library Dashboard</h2>
 
-    <input id="bookName" placeholder="Book Name">
-    <input id="authorName" placeholder="Author Name">
+    <div class="stats">
+      <div class="stat">Total Books<br><h3 id="totalBooks">0</h3></div>
+      <div class="stat">Issued Books<br><h3 id="issuedBooks">0</h3></div>
+      <div class="stat">Total Fine<br><h3 id="totalFine">₹0</h3></div>
+    </div>
 
-    <select id="category">
-      <option value="">Select Category</option>
-      <option value="engineering">Engineering</option>
-      <option value="arts">Arts & Science</option>
-      <option value="competitive">Competitive Exams</option>
-      <option value="productivity">Productivity</option>
-    </select>
+    <div class="progress-container">
+      <div class="progress-bar" id="issuedProgress">0%</div>
+    </div>
 
-    <br><br>
-    <button class="add-btn" onclick="addBook()">Add Book</button>
+    <div class="chart-container">
+      <div class="chart">
+        <h4>Category Distribution</h4>
+        <div id="categoryChart"></div>
+      </div>
+      <div class="chart">
+        <h4>Top Issued Books</h4>
+        <div id="topBooksChart"></div>
+      </div>
+    </div>
+
+    <div class="add-form">
+      <input id="bookName" placeholder="Book Name">
+      <input id="authorName" placeholder="Author">
+      <select id="category">
+        <option value="">Category</option>
+        <option value="engineering">Engineering</option>
+        <option value="arts">Arts</option>
+        <option value="competitive">Competitive</option>
+        <option value="productivity">Productivity</option>
+      </select>
+      <button onclick="addBook()">Add Book</button>
+    </div>
+
+    <div class="controls">
+      <input id="searchInput" placeholder="Search by book, author, student" oninput="renderHome()">
+      <button class="clear-btn" onclick="document.getElementById('searchInput').value='';renderHome()">Clear</button>
+      <select id="filterCat" onchange="renderHome()">
+        <option value="">All Categories</option>
+        <option value="engineering">Engineering</option>
+        <option value="arts">Arts</option>
+        <option value="competitive">Competitive</option>
+        <option value="productivity">Productivity</option>
+      </select>
+    </div>
 
     <table>
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Book</th>
-          <th>Author</th>
-          <th>Category</th>
+          <th onclick="sortTable(0)">ID</th>
+          <th onclick="sortTable(1)">Book</th>
+          <th onclick="sortTable(2)">Author</th>
+          <th onclick="sortTable(3)">Category</th>
           <th>Status</th>
+          <th>Student</th>
+          <th onclick="sortTable(6)">Due Date</th>
+          <th onclick="sortTable(7)">Fine</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -176,135 +181,111 @@ th { background:#e5e7eb; }
   </div>
 </section>
 
-<!-- CATEGORY SECTIONS -->
 <section id="engineering"><div class="container"></div></section>
 <section id="arts"><div class="container"></div></section>
 <section id="competitive"><div class="container"></div></section>
 <section id="productivity"><div class="container"></div></section>
 
-<!-- CONTACT -->
-<section id="contact">
-  <div class="container">
-    <h2>Contact</h2>
-    <p>Email: <b>venkatesanmahalingam2006@gmail.com</b></p>
-  </div>
-</section>
-
 <script>
+// ---------- INITIAL DATA ----------
 let isLogin=true;
-let books=JSON.parse(localStorage.getItem("books"))||[];
-let id=books.length+1;
+let books = JSON.parse(localStorage.getItem("books")) || [
+  {id:1,name:"Engineering Mathematics",author:"B.S. Grewal",category:"engineering",status:"Available"},
+  {id:2,name:"Digital Electronics",author:"Morris Mano",category:"engineering",status:"Available"},
+  {id:3,name:"1984",author:"George Orwell",category:"arts",status:"Available"},
+  {id:4,name:"Atomic Habits",author:"James Clear",category:"productivity",status:"Available"},
+  {id:5,name:"Quantitative Aptitude",author:"R.S. Aggarwal",category:"competitive",status:"Available"},
+  {id:6,name:"Lucent GK",author:"Lucent",category:"competitive",status:"Available"}
+];
+let idCounter = books.length + 1;
 
-/* AUTH */
-function toggleAuth(){
-  isLogin=!isLogin;
-  authTitle.innerText=isLogin?"Login":"Signup";
-  document.querySelector(".auth-card button").innerText=isLogin?"Login":"Signup";
-  document.querySelector(".switch").innerText=
-    isLogin?"Don't have an account? Signup":"Already have an account? Login";
-}
-function togglePassword(){
-  authPass.type=authPass.type==="password"?"text":"password";
-}
+// ---------- AUTH ----------
+function toggleAuth(){isLogin=!isLogin; authTitle.innerText=isLogin?"Login":"Signup"; document.querySelector(".auth-card button").innerText=isLogin?"Login":"Signup"; document.querySelector(".switch").innerText=isLogin?"Don't have an account? Signup":"Already have an account? Login";}
+function togglePassword(){authPass.type=authPass.type==="password"?"text":"password";}
 function authAction(){
-  const u=authUser.value.trim();
-  const p=authPass.value.trim();
-  if(!u||!p){alert("Enter username & password");return;}
+  const u=authUser.value.trim(), p=authPass.value.trim();
+  if(!u||!p){alert("Enter username & password"); return;}
   if(isLogin){
-    if(u===localStorage.getItem("user")&&p===localStorage.getItem("pass")){
-      auth.style.display="none";
-      navbar.style.display="flex";
-      showPage("home");
-    } else alert("Invalid credentials");
-  } else {
-    localStorage.setItem("user",u);
-    localStorage.setItem("pass",p);
-    alert("Signup successful!");
-    toggleAuth();
-  }
-}
-
-/* ENTER KEY SUPPORT */
-[authUser,authPass].forEach(el=>{
-  el.addEventListener("keydown",e=>{
-    if(e.key==="Enter") authAction();
-  });
-});
-[bookName,authorName].forEach(el=>{
-  el.addEventListener("keydown",e=>{
-    if(e.key==="Enter") addBook();
-  });
-});
-
-/* NAV */
-function showPage(page){
-  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
-  document.getElementById(page).classList.add("active");
-  if(page!=="home"&&page!=="contact") renderFiltered(page);
+    if(u===localStorage.getItem("user") && p===localStorage.getItem("pass")){auth.style.display="none"; navbar.style.display="flex"; showPage('home');} else alert("Invalid credentials");
+  } else {localStorage.setItem("user",u); localStorage.setItem("pass",p); alert("Signup successful!"); toggleAuth();}
 }
 function logout(){location.reload();}
 
-/* BOOK LOGIC */
+// ---------- NAV ----------
+function showPage(page){document.querySelectorAll("section").forEach(s=>s.classList.remove("active")); document.getElementById(page).classList.add("active"); if(page!=="home") renderFiltered(page);}
+
+// ---------- BOOK LOGIC ----------
 function addBook(){
-  const name=bookName.value.trim();
-  const author=authorName.value.trim();
-  const cat=category.value;
-  if(!name||!author||!cat){alert("Fill all details");return;}
-  books.push({id:id++,name,author,category:cat,status:"Available"});
+  const name=bookName.value.trim(), author=authorName.value.trim(), cat=category.value;
+  if(!name||!author||!cat){alert("Fill all details"); return;}
+  books.push({id:idCounter++, name, author, category:cat, status:"Available"});
   bookName.value=authorName.value=category.value="";
   save();
 }
+
 function toggleStatus(i){
-  books[i].status=books[i].status==="Available"?"Issued":"Available";
+  const student=prompt("Student Name:"); if(!student) return;
+  const book=books[i];
+  if(book.status==="Available"){const due=new Date(); due.setDate(due.getDate()+7); book.status="Issued"; book.student=student; book.due=due.toISOString();}
+  else {book.status="Available"; book.student=""; book.due="";}
   save();
 }
-function deleteBook(i){books.splice(i,1);save();}
-function save(){
-  localStorage.setItem("books",JSON.stringify(books));
-  renderHome();
-}
 
-/* RENDER HOME */
+function deleteBook(i){if(confirm("Are you sure?")){books.splice(i,1); save();}}
+function calcFine(book){if(book.status!=="Issued" || !book.due) return 0; const diff=Math.ceil((new Date()-new Date(book.due))/(1000*60*60*24)); return diff>0?diff*5:0;}
+function save(){localStorage.setItem("books",JSON.stringify(books)); renderHome();}
+
+// ---------- RENDER ----------
 function renderHome(){
+  const search=document.getElementById("searchInput").value.toLowerCase();
+  const filter=document.getElementById("filterCat").value;
   bookList.innerHTML="";
+  let issuedCount=0, totalFine=0;
   books.forEach((b,i)=>{
-    bookList.innerHTML+=`
-    <tr>
-      <td>${b.id}</td>
-      <td>${b.name}</td>
-      <td>${b.author}</td>
-      <td>${b.category}</td>
-      <td>${b.status}</td>
-      <td>
-        <button class="action-btn" onclick="toggleStatus(${i})">Issue/Return</button>
-        <button class="delete-btn" onclick="deleteBook(${i})">Delete</button>
-      </td>
-    </tr>`;
+    if((b.name.toLowerCase().includes(search)||b.author.toLowerCase().includes(search)||(b.student||"").toLowerCase().includes(search))&&(!filter||b.category===filter)){
+      const f=calcFine(b); totalFine+=f; if(b.status==="Issued") issuedCount++;
+      const overdueClass=f>0?"overdue":"";
+      bookList.innerHTML+=`<tr class="${overdueClass}"><td>${b.id}</td><td>${b.name}</td><td>${b.author}</td><td>${b.category}</td><td>${b.status}</td><td>${b.student||"-"}</td><td>${b.due?new Date(b.due).toLocaleDateString():"-"}</td><td>₹${f}</td><td><button class="action-btn" onclick="toggleStatus(${i})">Issue/Return</button> <button class="delete-btn" onclick="deleteBook(${i})">Delete</button></td></tr>`;
+    }
+  });
+  totalBooks.innerText=books.length; issuedBooks.innerText=issuedCount; totalFine.innerText="₹"+totalFine;
+
+  // Progress bar
+  const progress=(books.length?issuedCount/books.length*100:0); issuedProgress.style.width=progress+"%"; issuedProgress.innerText=Math.round(progress)+"%";
+
+  // Category Chart
+  const categories={engineering:0,arts:0,competitive:0,productivity:0};
+  books.forEach(b=>categories[b.category]++);
+  categoryChart.innerHTML="";
+  for(let cat in categories){
+    const bar=document.createElement("div"); bar.className="bar"; bar.style.width=(categories[cat]/books.length*100||0)+"%"; bar.innerText=`${cat}: ${categories[cat]}`; categoryChart.appendChild(bar);
+  }
+
+  // Top Issued Books
+  const topBooks=books.filter(b=>b.status==="Issued").sort((a,b)=>calcFine(b)-calcFine(a)).slice(0,3);
+  topBooksChart.innerHTML="";
+  topBooks.forEach(b=>{
+    const bar=document.createElement("div"); bar.className="bar"; bar.style.width="100%"; bar.innerText=b.name; topBooksChart.appendChild(bar);
   });
 }
 
-/* FILTERED VIEW */
 function renderFiltered(cat){
-  const c=document.querySelector(`#${cat} .container`);
-  c.innerHTML=`<h2>${cat.toUpperCase()}</h2>`;
+  const container=document.querySelector(`#${cat} .container`);
+  container.innerHTML=`<h2>${cat.toUpperCase()}</h2>`;
   const list=books.filter(b=>b.category===cat);
-  if(!list.length){c.innerHTML+="<p>No books available.</p>";return;}
-  list.forEach(b=>{
-    c.innerHTML+=`<p><b>${b.name}</b> by ${b.author} (${b.status})</p>`;
-  });
+  if(list.length===0){container.innerHTML+="<p>No books available.</p>"; return;}
+  list.forEach(b=>container.innerHTML+=`<p><b>${b.name}</b> by ${b.author} (${b.status})</p>`);
 }
 
-/* THEME */
-function toggleTheme(){
-  document.documentElement.classList.toggle("dark");
-  localStorage.setItem("theme",
-    document.documentElement.classList.contains("dark")?"dark":"light");
-}
-if(localStorage.getItem("theme")==="dark")
-  document.documentElement.classList.add("dark");
+// ---------- THEME ----------
+function toggleTheme(){document.documentElement.classList.toggle("dark"); localStorage.setItem("theme",document.documentElement.classList.contains("dark")?"dark":"light");}
+if(localStorage.getItem("theme")==="dark") document.documentElement.classList.add("dark");
 
+// ---------- SORT ----------
+function sortTable(col){books.sort((a,b)=>{let valA,valB; switch(col){case 0: valA=a.id; valB=b.id; break; case 1: valA=a.name.toLowerCase(); valB=b.name.toLowerCase(); break; case 2: valA=a.author.toLowerCase(); valB=b.author.toLowerCase(); break; case 3: valA=a.category.toLowerCase(); valB=b.category.toLowerCase(); break; case 6: valA=a.due||""; valB=b.due||""; break; case 7: valA=calcFine(a); valB=calcFine(b); break; default: valA=""; valB=""; break;} if(valA<valB) return -1;if(valA>valB) return 1; return 0;}); renderHome();}
+
+// ---------- INIT ----------
 renderHome();
 </script>
-
 </body>
 </html>

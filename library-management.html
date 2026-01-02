@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Library Management System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+  --bg:#f4f6f8; --card:#fff; --text:#111827; --nav:#1e293b; --btn:#2563eb;
+}
+.dark {
+  --bg:#0f172a; --card:#020617; --text:#e5e7eb; --nav:#020617; --btn:#38bdf8;
+}
+* { box-sizing:border-box; font-family:Arial,sans-serif; }
+body {
+  margin:0; min-height:100vh;
+  background:linear-gradient(135deg,#667eea,#764ba2);
+}
+
+/* AUTH */
+.auth-container {
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+.auth-card {
+  background:white;
+  width:360px;
+  padding:30px;
+  border-radius:12px;
+  box-shadow:0 15px 30px rgba(0,0,0,.3);
+}
+.auth-card input,.auth-card button {
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+}
+.auth-card button {
+  background:#667eea;
+  color:white;
+  border:none;
+  cursor:pointer;
+}
+.switch {
+  margin-top:10px;
+  font-size:14px;
+  cursor:pointer;
+}
+
+/* SHOW PASSWORD ALIGN */
+.show-pass {
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin-top:8px;
+  font-size:14px;
+}
+
+/* NAV */
+nav {
+  display:none;
+  background:var(--nav);
+  padding:12px;
+  gap:10px;
+  flex-wrap:wrap;
+}
+nav button {
+  background:var(--btn);
+  border:none;
+  padding:8px 12px;
+  border-radius:5px;
+  cursor:pointer;
+  color:white;
+}
+
+/* SECTIONS */
+section { display:none; padding:30px; }
+section.active { display:block; }
+.container {
+  max-width:900px;
+  margin:auto;
+  background:var(--card);
+  color:var(--text);
+  padding:25px;
+  border-radius:10px;
+}
+
+/* TABLE */
+table {
+  width:100%;
+  border-collapse:collapse;
+  margin-top:20px;
+}
+th,td {
+  border:1px solid #ccc;
+  padding:8px;
+  text-align:center;
+}
+th { background:#e5e7eb; }
+
+/* BUTTONS */
+.add-btn{background:#2563eb;color:white;border:none;padding:8px;}
+.action-btn{background:#16a34a;color:white;border:none;padding:6px;}
+.delete-btn{background:#dc2626;color:white;border:none;padding:6px;}
+.toggle{background:#f59e0b;}
+.logout{background:#dc2626;}
+</style>
+</head>
+
+<body>
+
+<!-- AUTH -->
+<div class="auth-container" id="auth">
+  <div class="auth-card">
+    <h2 id="authTitle">Login</h2>
+
+    <input id="authUser" placeholder="Username">
+    <input id="authPass" type="password" placeholder="Password">
+
+    <div class="show-pass">
+      <input type="checkbox" onclick="togglePassword()">
+      <span>Show Password</span>
+    </div>
+
+    <button onclick="authAction()">Login</button>
+    <div class="switch" onclick="toggleAuth()">Don't have an account? Signup</div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <button onclick="showPage('home')">Home</button>
+  <button onclick="showPage('engineering')">Engineering</button>
+  <button onclick="showPage('arts')">Arts & Science</button>
+  <button onclick="showPage('competitive')">Competitive Exams</button>
+  <button onclick="showPage('productivity')">Productivity</button>
+  <button onclick="showPage('contact')">Contact</button>
+  <button class="toggle" onclick="toggleTheme()">🌗</button>
+  <button class="logout" onclick="logout()">Logout</button>
+</nav>
+
+<!-- HOME -->
+<section id="home">
+  <div class="container">
+    <h2>Library Dashboard</h2>
+
+    <input id="bookName" placeholder="Book Name">
+    <input id="authorName" placeholder="Author Name">
+
+    <select id="category">
+      <option value="">Select Category</option>
+      <option value="engineering">Engineering</option>
+      <option value="arts">Arts & Science</option>
+      <option value="competitive">Competitive Exams</option>
+      <option value="productivity">Productivity</option>
+    </select>
+
+    <br><br>
+    <button class="add-btn" onclick="addBook()">Add Book</button>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Book</th>
+          <th>Author</th>
+          <th>Category</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="bookList"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- CATEGORY SECTIONS -->
+<section id="engineering"><div class="container"></div></section>
+<section id="arts"><div class="container"></div></section>
+<section id="competitive"><div class="container"></div></section>
+<section id="productivity"><div class="container"></div></section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <h2>Contact</h2>
+    <p>Email: <b>venkatesanmahalingam2006@gmail.com</b></p>
+  </div>
+</section>
+
+<script>
+let isLogin=true;
+let books=JSON.parse(localStorage.getItem("books"))||[];
+let id=books.length+1;
+
+/* AUTH */
+function toggleAuth(){
+  isLogin=!isLogin;
+  authTitle.innerText=isLogin?"Login":"Signup";
+  document.querySelector(".auth-card button").innerText=isLogin?"Login":"Signup";
+  document.querySelector(".switch").innerText=
+    isLogin?"Don't have an account? Signup":"Already have an account? Login";
+}
+function togglePassword(){
+  authPass.type=authPass.type==="password"?"text":"password";
+}
+function authAction(){
+  const u=authUser.value.trim();
+  const p=authPass.value.trim();
+  if(!u||!p){alert("Enter username & password");return;}
+  if(isLogin){
+    if(u===localStorage.getItem("user")&&p===localStorage.getItem("pass")){
+      auth.style.display="none";
+      navbar.style.display="flex";
+      showPage("home");
+    } else alert("Invalid credentials");
+  } else {
+    localStorage.setItem("user",u);
+    localStorage.setItem("pass",p);
+    alert("Signup successful!");
+    toggleAuth();
+  }
+}
+
+/* ENTER KEY SUPPORT */
+[authUser,authPass].forEach(el=>{
+  el.addEventListener("keydown",e=>{
+    if(e.key==="Enter") authAction();
+  });
+});
+[bookName,authorName].forEach(el=>{
+  el.addEventListener("keydown",e=>{
+    if(e.key==="Enter") addBook();
+  });
+});
+
+/* NAV */
+function showPage(page){
+  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+  document.getElementById(page).classList.add("active");
+  if(page!=="home"&&page!=="contact") renderFiltered(page);
+}
+function logout(){location.reload();}
+
+/* BOOK LOGIC */
+function addBook(){
+  const name=bookName.value.trim();
+  const author=authorName.value.trim();
+  const cat=category.value;
+  if(!name||!author||!cat){alert("Fill all details");return;}
+  books.push({id:id++,name,author,category:cat,status:"Available"});
+  bookName.value=authorName.value=category.value="";
+  save();
+}
+function toggleStatus(i){
+  books[i].status=books[i].status==="Available"?"Issued":"Available";
+  save();
+}
+function deleteBook(i){books.splice(i,1);save();}
+function save(){
+  localStorage.setItem("books",JSON.stringify(books));
+  renderHome();
+}
+
+/* RENDER HOME */
+function renderHome(){
+  bookList.innerHTML="";
+  books.forEach((b,i)=>{
+    bookList.innerHTML+=`
+    <tr>
+      <td>${b.id}</td>
+      <td>${b.name}</td>
+      <td>${b.author}</td>
+      <td>${b.category}</td>
+      <td>${b.status}</td>
+      <td>
+        <button class="action-btn" onclick="toggleStatus(${i})">Issue/Return</button>
+        <button class="delete-btn" onclick="deleteBook(${i})">Delete</button>
+      </td>
+    </tr>`;
+  });
+}
+
+/* FILTERED VIEW */
+function renderFiltered(cat){
+  const c=document.querySelector(`#${cat} .container`);
+  c.innerHTML=`<h2>${cat.toUpperCase()}</h2>`;
+  const list=books.filter(b=>b.category===cat);
+  if(!list.length){c.innerHTML+="<p>No books available.</p>";return;}
+  list.forEach(b=>{
+    c.innerHTML+=`<p><b>${b.name}</b> by ${b.author} (${b.status})</p>`;
+  });
+}
+
+/* THEME */
+function toggleTheme(){
+  document.documentElement.classList.toggle("dark");
+  localStorage.setItem("theme",
+    document.documentElement.classList.contains("dark")?"dark":"light");
+}
+if(localStorage.getItem("theme")==="dark")
+  document.documentElement.classList.add("dark");
+
+renderHome();
+</script>
+
+</body>
+</html>
